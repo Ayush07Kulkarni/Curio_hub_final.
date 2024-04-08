@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #007bff; /* Blue background color */
+            background-image: url('background.jpg');
+            background-size: cover;
+            color: #fff; /* White text color */
+            
+            background-position: center; /* Center the background image */
+        }
+    
+        h1 {
+            text-align: center;
+            color: #fff; /* White text color */
+        }
+    
+        form {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white background */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease; /* Add transition to all properties with 0.3s duration and ease timing function */
+            color: #333; /* Dark text color */
+        }
+    
+        input[type="submit"] {
+            background-color: #fff; /* White background color */
+            border: 1px solid #fff; /* White border */
+            color: #007bff; /* Blue text color */
+        }
+    
+        input[type="submit"]:hover {
+            background-color: #0056b3; /* Darker blue background color on hover */
+            color: #fff; /* White text color on hover */
+        }
+    
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            color: #fff; /* White text color */
+            text-decoration: none;
+        }
+    
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Register Page</h1>
+
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        {{ form.username }}
+        {{ form.password }}
+        {{ form.submit }}
+    </form>
+
+    <a href="{{ url_for('login') }}">Already have an account? Log In</a>
+</body>
+
+</html>

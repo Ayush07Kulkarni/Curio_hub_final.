@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photography Page</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #008cff;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #messages {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        input[type="text"] {
+            width: calc(100% - 85px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>  
+    <header>
+        <h1>Astrophysics Page</h1>
+    </header>
+    <div class="container">
+        <div id="messages"></div>
+        <input type="text" id="username" placeholder="Username">
+        <input type="text" id="message" placeholder="Message">
+        <button id="sendBtn">Send</button>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var storedUsername = localStorage.getItem('username');
+            if (storedUsername) {
+                $('#username').val(storedUsername);
+            }
+
+            var socket = io.connect("http://localhost:5000");
+            socket.on('connect', function(){
+                socket.send("User connected!");
+            });
+
+            socket.on('message', function(data){
+                $('#messages').append($('<p>').text(data));
+            });
+
+         function send_message()
+            {
+                var username = $('#username').val();
+                var message = $('#message').val();
+                if(username && message){
+                    socket.send(username+ ': '+ message);
+                    $('#message').val('');
+                    localStorage.setItem('username', username);
+                } else {
+                    alert("Please enter both username and message!");
+                }
+
+            }
+
+            $('#sendBtn').on('click', send_message);
+            $('#message').on('keypress', function(e){
+                if(e.which === 13){
+                    send_message();
+                }
+                
+            });
+        });
+
+
+    </script>
+</body>
+</html>
