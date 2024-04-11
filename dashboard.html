@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<link rel ="stylesheet" href="dashboard.css">
+<link href='https://fonts.google.com/specimen/Kalam' rel='stylesheet'> 
+<style>
+    .astrooo{
+        font-family: "Sofia",sans-serif;
+    }
+</style>
+    
+</head>
+<style>
+     body {
+            color: white;
+            background-color: rgb(62, 1, 245);
+            /* background-color: linear-gradient(#00c6fb,#005bea); */
+            text-align: center; /* Center align the content */
+        }
+        h1 {
+            color: rgb(255, 255, 255); /* Example styling for the heading */
+            
+            
+        }
+        .image-container {
+            display: flex; /* Use flexbox to align images in one line */
+            justify-content: center; /* Center align the images */
+            margin-bottom: 30px; /* Add some spacing between images and logout link */
+            font: 100;
+            color: aliceblue;
+        }
+        .image-container img {
+            width: 200px; /* Set a fixed width for the images */
+            height: 200px; 
+            margin: 0 20px; /* Add some spacing between images */
+            font: 100;
+            color: aliceblue;
+        }
+       
+        
+        .logout-link {
+            display: block; /* Display logout link as a block element */
+            text-align: left; /* Left align the logout link */
+            color: white;
+        }
+</style>
+<body>
+    <h1>CurioHub.</h1>
+    <h2>Available Groups:</h2>
+    <div class="image-container">
+        <a href="{{url_for('astrophysics')}}" style="color: aliceblue;" >Astrophysics<br><img src="https://tse4.mm.bing.net/th?id=OIP.q3g8ks7BRGe21E_jnQvqqQHaEf&pid=Api&P=0&h=180"></a>
+        <a href="{{url_for('photography')}}" style="color: aliceblue;">Photography<br><img src="https://static.photocdn.pt/images/articles/2019/04/30/what_is_photography-1.jpg"></a>
+    </div>
+    <a href="{{url_for('logout')}}" class="logout-link">logout</a>
+</body>
+</html>
