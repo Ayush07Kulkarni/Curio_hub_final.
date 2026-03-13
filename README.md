@@ -1,39 +1,119 @@
-CurioHub
+# CurioHub — Full-Stack Chat Platform
 
-CurioHub is a platform designed for curious minds who want to explore and discuss niche topics beyond mainstream conversations. It brings together people who enjoy deep dives into specialized interests, emerging ideas, and unconventional discussions.
+CurioHub is now a full-stack, production-style web application that demonstrates:
 
-Whether it's obscure science topics, unique hobbies, experimental technologies, or philosophical debates — CurioHub provides a space where curiosity leads the conversation.
+- Backend engineering with Express, JWT auth, role-based access control, and Socket.IO
+- Frontend engineering with React + Vite + React Router
+- Database integration with Prisma + SQLite
+- Workflow design through a request/approval system for creating new chatrooms
 
-🌟 Features
+## Significant Upgrades
 
-Niche Topic Communities
-Create or join communities centered around highly specific interests.
+- Migrated from a broken single-file Flask setup to a clean monorepo architecture
+- Implemented Express API with JWT auth, role-based access control, and Prisma-backed persistence
+- Built request-driven chatroom creation flow where admins approve/reject user requests
+- Added real-time room messaging with Socket.IO and persistent message history
+- Split experience into separate role-based pages:
+	- Admin page for moderation and approvals
+	- User page for requesting rooms and joining approved chats
+- Standardized local development flow to run frontend + backend together from root
 
-Deep Discussions
-Structured discussions that encourage thoughtful exploration rather than surface-level content.
+## What This Project Demonstrates
 
-Knowledge Sharing
-Members can share articles, resources, research, and insights within focused topic groups.
+### 1) Authentication + Authorization
+- User registration and login
+- JWT-based session handling
+- Role-based access (`USER`, `ADMIN`)
 
-Curated Content
-Discover unique topics and perspectives curated by community members.
+### 2) Real Chatroom Governance
+- Users can submit chatroom requests
+- Admins can approve or reject pending requests
+- Approval creates an actual chatroom record in the DB
 
-Curiosity Driven Exploration
-Designed for people who enjoy learning, questioning, and exploring new ideas.
+### 3) Real-Time Messaging
+- Socket.IO-powered live room chat
+- Server-side message validation
+- Persistent message storage in the database
+- Message history retrieval per room
 
-🎯 Vision
+### 4) Modern Frontend UX
+- Protected routes
+- Dashboard for rooms, requests, and admin moderation queue
+- Dedicated chatroom view with live updates
 
-CurioHub aims to build a digital space where intellectual curiosity is celebrated.
-Instead of algorithm-driven popularity, the platform focuses on meaningful engagement and exploration of specialized topics.
+## Tech Stack
 
-🧠 Who is CurioHub for?
+- **Frontend:** React, Vite, React Router, Socket.IO Client
+- **Backend:** Node.js, Express, Socket.IO, Zod, JWT, bcrypt
+- **Database:** Prisma ORM with SQLite
 
-Lifelong learners
+## Project Structure
 
-Researchers and students
+```
+.
+├── client/                 # React app
+│   ├── src/
+│   │   ├── components/
+│   │   ├── lib/
+│   │   └── pages/
+├── server/                 # Express + Prisma + Socket.IO
+│   ├── prisma/
+│   │   ├── schema.prisma
+│   │   └── seed.js
+│   └── src/
+│       └── index.js
+└── package.json            # Workspace scripts
+```
 
-Hobbyists with niche interests
+## Quick Start
 
-People who enjoy deep discussions
+### 1) Install dependencies
+```bash
+npm install
+```
 
-Anyone curious about the unexplored corners of knowledge
+### 2) Configure environment
+```bash
+cp server/.env.example server/.env
+cp client/.env.example client/.env
+```
+
+### 3) Initialize database
+```bash
+npm --workspace server run prisma:migrate
+npm --workspace server run prisma:seed
+```
+
+### 4) Run full stack
+```bash
+npm run dev
+```
+
+- Frontend: `http://localhost:5173`
+- Backend: `http://localhost:5050`
+
+## Default Admin (from seed)
+
+- Username: `admin`
+- Password: `admin`
+- Email: `admin@curiohub.dev`
+
+## Core API Endpoints
+
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+- `GET /api/me`
+- `GET /api/chatrooms`
+- `GET /api/chatrooms/:roomId/messages`
+- `POST /api/chatroom-requests`
+- `GET /api/chatroom-requests/mine`
+- `GET /api/admin/chatroom-requests`
+- `POST /api/admin/chatroom-requests/:requestId/approve`
+- `POST /api/admin/chatroom-requests/:requestId/reject`
+
+## Next Enhancements (Optional)
+
+- Add tests (API + UI)
+- Add Redis adapter for horizontal Socket.IO scaling
+- Add room membership and moderation tools
+- Add CI pipeline and Docker deployment

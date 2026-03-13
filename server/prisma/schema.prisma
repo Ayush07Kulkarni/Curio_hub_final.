@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id                 String            @id @default(cuid())
+  name               String
+  email              String            @unique
+  passwordHash       String
+  role               Role              @default(USER)
+  createdAt          DateTime          @default(now())
+  chatroomRequests   ChatroomRequest[] @relation("Requester")
+  reviewedRequests   ChatroomRequest[] @relation("Reviewer")
+  sentMessages       Message[]
+  createdRooms       Chatroom[]        @relation("RoomCreator")
+}
+
+model Chatroom {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  description String
+  createdAt   DateTime  @default(now())
+  createdById String
+  createdBy   User      @relation("RoomCreator", fields: [createdById], references: [id])
+  messages    Message[]
+}
+
+model ChatroomRequest {
+  id           String        @id @default(cuid())
+  name         String
+  description  String
+  status       RequestStatus @default(PENDING)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  requesterId  String
+  reviewerId   String?
+  roomId       String?
+  requester    User          @relation("Requester", fields: [requesterId], references: [id])
+  reviewer     User?         @relation("Reviewer", fields: [reviewerId], references: [id])
+
+  @@unique([requesterId, name])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+  roomId    String
+  senderId  String
+  room      Chatroom @relation(fields: [roomId], references: [id])
+  sender    User     @relation(fields: [senderId], references: [id])
+}
